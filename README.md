@@ -1,14 +1,17 @@
 # mcp-backend-stdio
 
-stdio transport backend for mcp-protocol.
-
-Part of [cl-stack](https://github.com/egao1980/cl-stack) agent-wire ([brief](https://github.com/egao1980/cl-stack/blob/main/docs/capabilities/agent-wire.md)).
+stdio (newline JSON-RPC) backend for [`mcp-protocol`](https://github.com/egao1980/mcp-protocol). Wraps [`rpc-backend-stdio`](https://github.com/egao1980/rpc-backend-stdio). Dual-era: modern `2026-07-28` (`server/discover`) and legacy `2025-11-25` (`initialize`).
 
 ```lisp
 (asdf:load-system "mcp-backend-stdio")
-```
+(mcp-backend-stdio:use-stdio-mcp-backend)
 
-CI: `setup-client` + `setup-roswell` + `scripts/ci-install.lisp` / `ci-test.lisp` (OCI only, no Quicklisp).
+;; client (optional :probe t runs mcp-initialize / discover-then-legacy)
+(mcp-protocol:mcp-connect :command '("my-mcp-server") :probe t)
+
+;; server on *standard-input* / *standard-output*
+(mcp-protocol:mcp-serve (make-instance 'mcp-protocol:mcp-server))
+```
 
 ## License
 

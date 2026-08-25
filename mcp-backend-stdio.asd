@@ -1,5 +1,5 @@
 (defsystem "mcp-backend-stdio"
-  :version "0.1.0"
+  :version "0.1.1"
   :description "stdio transport backend for mcp-protocol (newline JSON-RPC)"
   :author "egao1980"
   :license "MIT"

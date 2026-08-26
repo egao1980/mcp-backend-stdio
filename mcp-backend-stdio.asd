@@ -4,7 +4,7 @@
   :author "egao1980"
   :license "MIT"
   :depends-on ("mcp-protocol" "rpc-backend-stdio" "rpc-protocol-json")
-  :properties (:cl-repo (:ci (:with ("dissect") :sources (("dissect" :ql)))))
+  :properties (:cl-repo (:ci (:with ("dissect"))))
   :serial t
   :pathname "src"
   :components ((:file "package")

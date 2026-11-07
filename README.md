@@ -13,6 +13,8 @@ stdio (newline JSON-RPC) backend for [`mcp-protocol`](https://github.com/egao198
 (mcp-protocol:mcp-serve (make-instance 'mcp-protocol:mcp-server))
 ```
 
+While serving, server notifications (`mcp-log`, `send-progress`, `notify-resources-updated`, …) are written on the same stream. They may come from any thread: each line is written under the transport's lock (`rpc-backend-stdio` ≥ 0.1.2).
+
 ## License
 
 MIT

@@ -37,3 +37,34 @@
     (ok (eq :unknown (mcp-protocol:mcp-client-era client)))
     (ok (typep (mcp-protocol:mcp-client-transport client)
                'rpc-backend-stdio:stdio-rpc-transport))))
+
+(deftest stdio-serve-sends-notifications
+  (let* ((server (make-instance 'mcp-protocol:mcp-server :name "notify-fix" :version "0.1.0"))
+         (req (rpc-protocol:encode-request
+               "tools/call"
+               (mcp-protocol:json-object
+                "name" "work" "arguments" (mcp-protocol:json-object)
+                "_meta" (mcp-protocol:json-object "progressToken" 7))
+               :id 1))
+         (in (make-string-input-stream (format nil "~a~%" req)))
+         (out (make-string-output-stream)))
+    (mcp-protocol:register-tool
+     server
+     (mcp-protocol:make-mcp-tool
+      "work" :input-schema (mcp-protocol:json-object "type" "object")
+      :handler (lambda (args)
+                 (declare (ignore args))
+                 (mcp-protocol:send-progress server 1 :total 1)
+                 (mcp-protocol:mcp-log server "info" "working")
+                 "ok")))
+    (mcp-protocol:backend-mcp-serve (mcp-backend-stdio:make-stdio-mcp-backend) server
+                                    :input in :output out)
+    (let ((msgs (with-input-from-string (s (get-output-stream-string out))
+                  (loop for line = (read-line s nil) while line
+                        collect (rpc-protocol:decode-message line)))))
+      (ok (equal '("notifications/progress" "notifications/message" nil)
+                 (mapcar (lambda (m) (gethash "method" m)) msgs)))
+      (ok (= 7 (gethash "progressToken" (gethash "params" (first msgs)))))
+      (ok (= 1 (gethash "id" (third msgs))))
+      ;; the notifier is removed when serving ends
+      (ok (null (mcp-protocol:mcp-server-notifier server))))))

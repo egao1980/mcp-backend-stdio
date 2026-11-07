@@ -1,9 +1,9 @@
 (defsystem "mcp-backend-stdio"
-  :version "0.1.1"
+  :version "0.2.0"
   :description "stdio transport backend for mcp-protocol (newline JSON-RPC)"
   :author "egao1980"
   :license "MIT"
-  :depends-on ("mcp-protocol" "rpc-backend-stdio" "rpc-protocol-json")
+  :depends-on ((:version "mcp-protocol" "0.3.0") (:version "rpc-backend-stdio" "0.1.2") "rpc-protocol-json")
   :properties (:cl-repo (:ci (:with ("dissect"))))
   :serial t
   :pathname "src"

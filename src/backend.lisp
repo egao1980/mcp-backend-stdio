@@ -24,9 +24,14 @@
 
 (defmethod mcp-protocol:backend-mcp-serve
     ((backend stdio-mcp-backend) server &key input output)
-  (mcp-protocol:serve-mcp
-   server
-   :transport (rpc-backend-stdio:make-stdio-rpc-transport
-               :input input :output output)))
+  "Serve SERVER over stdio. While serving, server notifications (log, progress,
+resource updates) go out on the same stream from any thread."
+  (let ((transport (rpc-backend-stdio:make-stdio-rpc-transport :input input :output output))
+        (previous (mcp-protocol:mcp-server-notifier server)))
+    (setf (mcp-protocol:mcp-server-notifier server)
+          (lambda (method params)
+            (rpc-protocol:rpc-notify method params :transport transport)))
+    (unwind-protect (mcp-protocol:serve-mcp server :transport transport)
+      (setf (mcp-protocol:mcp-server-notifier server) previous))))
 
 (use-stdio-mcp-backend)

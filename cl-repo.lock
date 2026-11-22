@@ -1,0 +1,9 @@
+;;; cl-repo.lock -- auto-generated, do not edit
+((:system "dissect" :version "1.0.0" :index-digest
+  "sha256:ad260c48c9d7e7551f83c25d859ac1ad1c708e24c11ef727ddc675658f1b1d2c"
+  :registry "https://ghcr.io" :source-digest
+  "sha256:986e8aac0ba78d72185991df1ed3c0b91a9debc0c68dd9f6cc8ce2efacbccb3f")
+ (:system "supervisor-protocol" :version "0.5.0" :index-digest
+  "sha256:3875143bfd6bc0c8a1202145a7486b6f08dd27a1cdecac9ccd06fe5746f48765"
+  :registry "https://ghcr.io" :source-digest
+  "sha256:7d51d568ebd39440c6503311b0f9b439b3250bcf3460c028af63fa3278bd37ab"))

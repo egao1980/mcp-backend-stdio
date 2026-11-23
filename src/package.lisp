@@ -2,6 +2,7 @@
   (:use #:cl)
   (:export #:stdio-mcp-backend
            #:make-stdio-mcp-backend
-           #:use-stdio-mcp-backend))
-
-(in-package #:mcp-backend-stdio)
+           #:use-stdio-mcp-backend
+           ;; 0.3.0
+           #:close-stdio-mcp-client
+           #:stdio-mcp-client-process))
